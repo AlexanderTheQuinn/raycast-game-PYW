@@ -15,6 +15,8 @@ class Player:
         self.x, self.y = PLAYER_POS
         self.angle = PLAYER_ANGLE
         self.pitch = 0
+        self.rel_x = 0
+        self.rel_y = 0
         
     def movement(self):
         sin_a = math.sin(self.angle)
@@ -73,9 +75,8 @@ class Player:
         mx, my = pg.mouse.get_pos()
         if mx < MOUSE_BORDER_LEFT or mx > MOUSE_BORDER_RIGHT:
             pg.mouse.set_pos([HALF_WIDTH, HALF_HEIGHT])
-        if my < MOUSE_BORDER_BOTTOM or my > MOUSE_BORDER_TOP:
-            pg.mouse.set_pos([HALF_WIDTH, HALF_HEIGHT])
-    # Horizontal mouse movement (left-right rotation)
+        
+        # Horizontal mouse movement (left-right rotation)
         self.rel_x = pg.mouse.get_rel()[0]
         self.rel_x = max(-MOUSE_MAX_REL, min(MOUSE_MAX_REL, self.rel_x))
         self.angle += self.rel_x * MOUSE_SENSITIVITY * self.game.delta_time
