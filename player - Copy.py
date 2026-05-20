@@ -76,19 +76,17 @@ class Player:
         if mx < MOUSE_BORDER_LEFT or mx > MOUSE_BORDER_RIGHT:
             pg.mouse.set_pos([HALF_WIDTH, HALF_HEIGHT])
         
-        # Horizontal mouse movement (left-right rotation)
-        self.rel_x = pg.mouse.get_rel()[0]
+        # Get both mouse movements in ONE call
+        self.rel_x, self.rel_y = pg.mouse.get_rel()
         self.rel_x = max(-MOUSE_MAX_REL, min(MOUSE_MAX_REL, self.rel_x))
-        self.angle += self.rel_x * MOUSE_SENSITIVITY * self.game.delta_time
-        
-        # Vertical mouse movement (up-down look, only downward)
-        self.rel_y = pg.mouse.get_rel()[1]
         self.rel_y = max(-MOUSE_MAX_REL, min(MOUSE_MAX_REL, self.rel_y))
         
-        # Only allow downward movement (positive rel_y)
-        if self.rel_y > 0:  # Only process downward movement
+        # Horizontal rotation
+        self.angle += self.rel_x * MOUSE_SENSITIVITY * self.game.delta_time
+        
+        # Vertical pitch (downward only)
+        if self.rel_y > 0:
             self.pitch += self.rel_y * MOUSE_SENSITIVITY * self.game.delta_time
-            # Clamp pitch to prevent looking too far down
             self.pitch = min(self.pitch, HALF_FOV)
         
     def update(self): 
